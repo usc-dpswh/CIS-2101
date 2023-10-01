@@ -1,84 +1,52 @@
-#ifndef UID_COMPUTER_WORD_H
-#define UID_COMPUTER_WORD_H
-
 #include <stdbool.h>
 #include <stdio.h>
 
-typedef unsigned char Set;
+typedef unsigned char SET;
 
-// UID Functions
-void insertElem(Set *set, char elem);
-void deleteElem(Set *set, char elem);
-bool isMember(Set set, char elem);
-Set setUnion(Set a, Set b);
-Set setIntersection(Set a, Set b);
-Set setDifference(Set a, Set b);
+void insertElem(SET *, unsigned char);
+void deleteElem(SET *, unsigned char);
+bool isMember(SET, unsigned char);
+SET setUnion(SET, SET);
+SET setIntersection(SET, SET);
+SET setDifference(SET, SET);
+void displayBitPattern(SET);
+void displayElem(SET);
 
-// General Functions
-void initSet(Set *set);
-void makeNull(Set *set);
-void displaySet(Set set);
+int main(void) {
+    SET carlo = 0;
 
-// Computer Word Functions
-void displayBitPattern(Set set);
+    displayBitPattern(carlo);
+    insertElem(&carlo, 5);
+    insertElem(&carlo, 1);
+    insertElem(&carlo, 0);
 
-void insertElem(Set *set, char elem) {
-    *set |= (1 << elem);
+    displayBitPattern(carlo);
+    displayElem(carlo);
+    printf("%s",isMember(carlo,5)? "TRUE":"FALSE");
 }
 
-void deleteElem(Set *set, char elem) {
-    *set &= ~(1 << elem);
+void insertElem(SET *A, unsigned char Elem) { *A = *A | 1 << Elem; }
+void deleteElem(SET *A, unsigned char Elem) { *A = *A & ~(1 << Elem); }
+bool isMember(SET A, unsigned char Elmo) { return A && (1 << Elmo); }
+SET setUnion(SET A, SET B) { return A | B; }
+SET setIntersection(SET A, SET B) { return A & B; }
+SET setDifference(SET A, SET B) { return A & ~B; }
+void displayBitPattern(SET A) {
+    int x;
+    for (x = 1 << sizeof(SET) * 8 - 1; x > 0; x >>= 1) {
+        printf("%d", A & x ? 1 : 0);
+    }
+    printf("\n");
 }
 
-bool isMember(Set set, char elem) {
-    return (set & (1 << elem)) != 0;
-}
-
-Set setUnion(Set a, Set b) {
-    return a | b;
-}
-
-Set setIntersection(Set a, Set b) {
-    return a & b;
-}
-
-Set setDifference(Set a, Set b) {
-    return a & (~b);
-}
-
-void initSet(Set *set) {
-    *set = 0;
-}
-
-void makeNull(Set *set) {
-    *set = 0;
-}
-
-void displaySet(Set set) {
-    Set mask = 1 << (sizeof(Set) * 8 - 1);
-    int elem;
-
-    puts("\n[Cursor-based]\n");
-
-    for (elem = sizeof(Set) * 8 - 1; elem >= 0; elem--, mask >>= 1) {
-        if (set & mask) {
-            printf("%d ", elem);
+void displayElem(SET A) {
+    int x = 1 << sizeof(SET) * 8 - 1, y;
+    for (y = sizeof(SET) * 8 - 1; x > 0; x >>= 1, y--) {
+        if (x & A) {
+            printf("%d", y);
+        } else {
+            printf(" ");
         }
     }
-
     printf("\n");
 }
-
-void displayBitPattern(Set set) {
-    Set mask;
-
-    puts("\n[Cursor-based]\n");
-
-    for (mask = 1 << (sizeof(Set) * 8 - 1); mask > 0; mask >>= 1) {
-        printf("%d", (set & mask) ? 1 : 0);
-    }
-
-    printf("\n");
-}
-
-#endif // COMPUTER_WORD_H
