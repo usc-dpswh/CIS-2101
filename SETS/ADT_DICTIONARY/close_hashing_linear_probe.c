@@ -77,7 +77,7 @@ void insert(Dictionary *main, char elem) {
 
   // Remember that for sets, we must first check if it's unique via our isMember()
   if (!isMember(*main, elem)){
-
+      
     for (x = hashValue ; (*main)[x] != DELETED && (*main)[x] != EMPTY ; x = (x + 1) % MAX){}
 
     if ((*main)[x] == DELETED || (*main)[x] == EMPTY){

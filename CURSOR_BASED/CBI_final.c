@@ -78,6 +78,7 @@ int allocSpace(VirtualHeap *main){
 }
 
 void insertFirstVH(LIST *main, VirtualHeap *mainVH, int newData){
+  // Check if there is still space
   if (mainVH->Avail != -1){
 
     int newNode = allocSpace(mainVH);

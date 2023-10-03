@@ -47,9 +47,11 @@ SET* intersectionSorted(SET A, SET B){
 
   while(A_INDEX < MAX && B_INDEX < MAX){
     if (A[A_INDEX] < B[B_INDEX]){
-      A_INDEX++;       
+      A_INDEX++;     
+        
     } else if (B[B_INDEX] < A[A_INDEX]){
       B_INDEX++;
+
     } else {
 
       (*C)[C_INDEX] = A[A_INDEX];

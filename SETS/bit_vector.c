@@ -110,6 +110,8 @@ void displaySet(SET main){
   for (x = 0 ; x < MAX ; x++){
     if (main[x] == 1){
       printf("%d ", x);
+    } else {
+      printf("  ");
     }
   }
   printf("\n");
