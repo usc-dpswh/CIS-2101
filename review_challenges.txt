@@ -27,3 +27,6 @@
             **NOTE that C is now an array which is to be returned in main(),
             **then in main, we pass C to another function displaying it in BIT VECTOR
             SET C = {2,5} => 00100100
+
+5)  Cursor-Based Implementation with StudRec. Perform CRUD. Deleted students are placed
+    in a linked list.
