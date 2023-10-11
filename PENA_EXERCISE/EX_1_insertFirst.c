@@ -22,12 +22,13 @@ int main(){
   StudList usc_record = NULL;
 
   usc_record = (StudList)malloc(sizeof(Studrec));
-  usc_record->stud.ID = 22103514;
-  strcpy(usc_record->stud.LN, "LANUTAN");
-  strcpy(usc_record->stud.FN, "ACHILLE LORENZO");
-  usc_record->stud.MI = 'M';
-  strcpy(usc_record->stud.course, "BSIT");
-  usc_record->stud.yearLevel = 2;
+  usc_record->stud=(Studrec){22103514,"LANUTAN","ACHILLE LORENZO",'M',"BSIT",2};
+  // usc_record->stud.ID = 22103514;
+  // strcpy(usc_record->stud.LN, "LANUTAN");
+  // strcpy(usc_record->stud.FN, "ACHILLE LORENZO");
+  // usc_record->stud.MI = 'M';
+  // strcpy(usc_record->stud.course, "BSIT");
+  // usc_record->stud.yearLevel = 2;
   usc_record->link = NULL;
 
   usc_record->link = (StudList)malloc(sizeof(Studrec));

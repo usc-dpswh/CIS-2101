@@ -22,6 +22,8 @@ typedef struct {
 Dictionary initDictionary(void);
 int getHash(char data);
 bool isMember(Dictionary dict, char data);
+int allocSpace(Dictionary *dict);
+void deallocSpace(Dictionary *dict, int deleteVal);
 void insertElem(Dictionary *dict, char data);
 void deleteElem(Dictionary *dict, char data);
 void displayDictionary(Dictionary dict);
@@ -32,12 +34,31 @@ int main(){
   Merriam = initDictionary();
 
   insertElem(&Merriam, 'A');
-  // insertElem(&Merriam, 'B');
-  // insertElem(&Merriam, 'U');
+  insertElem(&Merriam, 'B');
+  insertElem(&Merriam, 'U');
   insertElem(&Merriam, 'I');
   insertElem(&Merriam, 'Q');
 
   displayDictionary(Merriam);
+
+  // testing to delete the 'root' element
+  deleteElem(&Merriam, 'A');
+
+  displayDictionary(Merriam);
+  printf("\n\n");
+
+  // testing to delete any element from SAME group after
+  // deleting 'root' element
+  deleteElem(&Merriam, 'I');
+
+  displayDictionary(Merriam);
+  printf("\n\n");
+
+  // testing to delete all elements from the same group
+  deleteElem(&Merriam, 'Q');
+
+  displayDictionary(Merriam);
+
 }
 
 Dictionary initDictionary(void){
@@ -62,10 +83,15 @@ Dictionary initDictionary(void){
 }
 
 int getHash(char data){
+  // we "% PACKING_DENSITY" because we want all the elements
+  // that we're inserting to be placed ONLY in PRIME DATA AREA.
+  // the only reason why an element would be placed in SYNONYM AREA
+  // is that there would be collision (same hash value)
   return (toupper(data) - 'A') % PACKING_DENSITY;
 }
 
 bool isMember(Dictionary dict, char data){
+  // we always start by getting the hashValue so that we have a starting point of our search
   int hashVal;
 
   for (hashVal = getHash(data) ; dict.NodeType[hashVal].link != -1 && dict.NodeType[hashVal].elem != data ; hashVal = dict.NodeType[hashVal].link){}
@@ -82,6 +108,13 @@ int allocSpace(Dictionary *dict){
   return retVal;
 }
 
+void deallocSpace(Dictionary *dict, int deleteVal){
+  if (deleteVal >= 0 && deleteVal < MAX){
+    dict->NodeType[deleteVal].link = dict->Avail;
+    dict->Avail = deleteVal;
+  }
+}
+
 void insertElem(Dictionary *dict, char data){
   int hashVal;
 
@@ -94,15 +127,15 @@ void insertElem(Dictionary *dict, char data){
 
     } else {
       // else block is if there is collision
+      
+      // since there is collision, we need to request space from our Virtual Heap and we perform PPN
       int newNode = allocSpace(dict);
       int *trav;
 
       for (trav = &(dict->NodeType[hashVal].link) ; *trav != -1 ; trav = &(dict->NodeType[*trav].link)){}
 
       if (newNode != -1){
-        // dict->Avail = dict->NodeType[newNode].link;
         dict->NodeType[newNode].elem = data;
-        // dict->NodeType[newNode].link = dict->NodeType[hashVal].link;
         dict->NodeType[newNode].link = *trav;
         *trav = newNode;
       }
@@ -110,28 +143,37 @@ void insertElem(Dictionary *dict, char data){
   }
 }
 
-// void displayDictionary(Dictionary dict){
-//   int x;
-//   int trav;
+void deleteElem(Dictionary *dict, char data){
+  int hashVal = getHash(data);
 
-//   for (x = 0 ; x < PACKING_DENSITY ; x = dict.NodeType[x].link){
-//     printf("[%d]", x);
-//     for (trav = x ; trav != -1 ; trav = dict.NodeType[trav].link){
-//       printf("%2c", dict.NodeType[x].elem);
-//     }
-//   }
-//   printf("\n");
-// }
+  // code to delete first/root element of the group
+  if (dict->NodeType[hashVal].elem == data){
+    dict->NodeType[hashVal].elem = DELETED;
+  // code to loop to find everything but the root element of group
+  } else {
+    int *trav;
+    int temp;
+
+    for (trav = &(dict->NodeType[hashVal].link) ; *trav != -1 && dict->NodeType[*trav].elem != data ; trav = &dict->NodeType[*trav].link){}
+
+    if (dict->NodeType[*trav].elem == data){
+      temp = *trav;
+      *trav = dict->NodeType[temp].link;
+      deallocSpace(dict, temp);
+    }
+  }
+}
 
 void displayDictionary(Dictionary dict) {
     int index;
     int trav;
 
+    // First for loop prints the very first element of the group
     for (index = 0; index < PACKING_DENSITY; index++) {
         printf("%2d[ %c | %2d ] ", 
           index, dict.NodeType[index].elem,
           dict.NodeType[index].link);
-
+        // Second loop prints rest of elements from the group
         for (trav = dict.NodeType[index].link; trav != -1;
             trav = dict.NodeType[trav].link) {
             printf("%2d[ %c | %2d ] ", 
