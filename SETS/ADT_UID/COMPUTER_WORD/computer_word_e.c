@@ -64,10 +64,10 @@ int main(){
 }
 
 void insertElem(SET *main, unsigned char elem){
-  *main |= 1 << elem;
+  *main |= 1 << elem;       // *main = *main | (1 << elem);
 }
 void deleteElem(SET *main, unsigned char elem){
-  *main &= ~(1 << elem);
+  *main &= ~(1 << elem);    // *main = *main & ~(1 << elem);
 }
 bool isMember(SET main, unsigned char elem){
   return main & (1 << elem);

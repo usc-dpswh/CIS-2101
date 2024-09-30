@@ -9,9 +9,9 @@
 #define MAX 8
 
 typedef struct{
-    char elem[MAX];
-    int rear;
-    int front;
+  char elem[MAX];
+  int rear;
+  int front;
 } QUEUE;
 
 void initQueue(QUEUE *main);
@@ -74,7 +74,6 @@ void enqueue(QUEUE *main, char newData){
   // if not full, proceed to enqueue
   if (!FULL){
     printf("enqueue(%c)\n", newData);
-
     main->rear = (main->rear + 1) % MAX;
     main->elem[main->rear] = newData;
   } else {

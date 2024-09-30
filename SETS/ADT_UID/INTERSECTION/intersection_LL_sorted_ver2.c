@@ -95,7 +95,6 @@ SET intersectionSorted(SET A, SET B){
         A = A->link;
         B = B->link;
       }
-      
     }
   }
   return C;

@@ -24,7 +24,6 @@ int main(){
   printf("A ∩ B\n");
   C = intersectionSorted(A, B);
   displaySet(*C);
-
 }
 
 void initSet(SET main){

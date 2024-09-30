@@ -11,6 +11,7 @@ void displaySet(SET main);
 int main(){
   SET A = {1,2,5,6};
   SET B = {2,3,4,7};
+  //      {1,2,3,4,5,6,7}
   SET *C;
 
   // initSet(A);
@@ -72,7 +73,7 @@ void displaySet(SET main){
   int x;
 
   printf("{");
-  for (x = 0 ; x < MAX ; x++){
+  for (x = 0 ; x < MAX ; x++){ 
     printf("%d", main[x]);
     if (x < MAX - 1) {
       printf(", ");
