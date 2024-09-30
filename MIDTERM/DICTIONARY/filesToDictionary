@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define MAX 5
+#define EMPTY -1
+#define DELETED -2
+
+typedef int DICTIONARY[MAX];
+
+typedef struct node {
+  DICTIONARY A;
+  int count;
+} SET, *SETptr;
+
+void initDictionary(DICTIONARY main);
+void populate(DICTIONARY* main);
+int hash(DICTIONARY main, int elem);
+bool isMember(DICTIONARY main, int find);
+void insert(DICTIONARY main, int newData);
+void display(DICTIONARY main);
+void delete(DICTIONARY main, int delete);
+DICTIONARY* insertSorted(DICTIONARY main);
+
+int main(){
+  DICTIONARY Webster;
+  DICTIONARY* sortedWebster;
+  initDictionary(Webster);
+  
+  
+}
+
+void initDictionary(DICTIONARY main){
+  int x;
+  for (x = 0 ; x < MAX ; x++){
+    main[x] = EMPTY;
+  }
+  printf("Initialized dictionary.\n");
+}
+void populate(DICTIONARY* main){
+  i
+}
+int hash(DICTIONARY main, int elem){
+  return elem % 10;
+}
+bool isMember(DICTIONARY main, int find){
+  int hashValue = hash(main, find);
+  int count;
+  int x;
+  for (x = hashValue, count = 0 ; count != MAX && main[x] != EMPTY && main[x] != DELETED && main[x] != find ; x = (x + 1) % MAX, count++){};
+  return main[x] == find;
+}
+void insert(DICTIONARY main, int newData){
+  int hashValue = hash(main, newData);
+  int count;
+  if (!isMember(main, newData)){
+    for (count = 0 ; count < MAX && main[hashValue] != EMPTY && main[hashValue] != DELETED ; hashValue = (hashValue + 1) % MAX, count++){};
+    if (count < MAX){
+      main[hashValue] = newData;
+      printf("Inserted %d\n", newData);
+    } else {
+      printf("Your dictionary is full.\n");
+    }
+  } else {
+    printf("Not unique.\n");
+  }
+}
+void display(DICTIONARY main){
+  int x;
+  printf("HASH TABLE\n");
+  printf("%8s|%s\n", "INDEX", "VALUE");
+  printf("=============================\n");
+  for (x = 0 ; x < MAX ; x++){
+    printf("%8d|%8d\n", x, main[x]);
+  }
+}
